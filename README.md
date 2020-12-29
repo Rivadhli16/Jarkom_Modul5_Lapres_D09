@@ -6,15 +6,19 @@
 #### Kelompok kami pembagian subnet menggunakan metode vlsm
 
 Pembagian subnet
-![img](/img/1.jpg)
+
+![img](/img/1.png)
 
 Jumlah IP pada tiap-tiap subnet dan range-nya yang ada pada topologi
+
 ![img](/img/2.jpg)
 
 Kemudian untuk pembagian pohonnya adalah(puncaknya menggunakan prefix /22 karena menggunakan prefix /23 tidak dapat digunakan untuk membagi 2 subnet /24
+
 ![img](/img/3.jpg)
 
 Pembagian NID tiap subnet 
+
 ![img](/img/3-1.jpg)
 
 Membuat topologi jaringan sesuai dengan rancangan yang diberikan pada gambar di atas. Sekalian membuat bye.shnya.
@@ -225,6 +229,7 @@ subnet 192.168.1.0 netmask 255.255.255.0 {
 ```
 
 Kemudian juga buka nano /etc/default/isc-dhcp-server, lalu konfigurasi "INTERFACESv4=eth0":
+
 ![img](/img/4.jpg)
 
 #### Kendala yang dialami 
@@ -237,6 +242,9 @@ Pada UML SURABAYA Ketikkan iptables sebagai berikut :
 ```
 iptables -t nat -A POSTROUTING -s 192.168.0.0/16 -o eth0 -j SNAT --to-source 10.151.78.42
 ```
+
+Mencoba ping google.com selain di SURABAYA
+
 ![img](/img/5.jpg)
 
 ## No2: Kalian diminta untuk mendrop semua akses SSH dari luar Topologi (UML) Kalian pada server yang memiliki ip DMZ (DHCP dan DNS SERVER) pada SURABAYA demi menjaga keamanan.
@@ -246,6 +254,7 @@ Pada UML SURABAYA Ketikkan iptables sebagai berikut :
 ```
 iptables -A FORWARD -d 10.151.79.80/29 -i eth0 -p tcp --dport 22 -j DROP
 ```
+
 ![img](/img/6.jpg)
 
 ## No3: Karena tim kalian maksimal terdiri dari 3 orang, Bibah meminta kalian untuk membatasi DHCP dan DNS server hanya boleh menerima maksimal 3 koneksi ICMP secara bersamaan yang berasal dari mana saja menggunakan iptables pada masing masing server, selebihnya akan di DROP.
@@ -256,6 +265,7 @@ Pada UML MALANG Ketikkan iptables sebagai berikut :
 iptables -A INPUT -p icmp -m connlimit --connlimit-above 3 --connlimit-mask 0 -j DROP
 ```
 
+Ping ke MALANG pada 4 UML berbeda, maka untuk UML ke-4 tidak akan bisa mengakses Malang karena sudah dibatasi menjadi 3 saja
 
 ![img](/img/7.jpg)
 
